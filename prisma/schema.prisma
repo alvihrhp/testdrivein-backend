@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENT
+  SALES
+}
+
+enum BookingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+model User {
+  id              String    @id @default(uuid())
+  name            String
+  email           String    @unique
+  password        String
+  phone           String    @unique
+  role            Role      @default(CLIENT)
+  clientBookings  Booking[] @relation("ClientBookings")
+  salesBookings   Booking[] @relation("SalesBookings")
+  mobils          Mobil[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Booking {
+  id          String   @id @default(uuid())
+  user        User     @relation("ClientBookings", fields: [userId], references: [id])
+  userId      String
+  sales       User     @relation("SalesBookings", fields: [salesId], references: [id])
+  salesId     String
+  mobil       Mobil    @relation(fields: [mobilId], references: [id])
+  mobilId     String
+  mobilName   String
+  mobilImage  String?  // Made optional as it can be derived from Mobil.images
+  mobilPrice  Int?     // Made optional as it can be derived from Mobil.price
+  showroom    String
+  tanggal     DateTime
+  jam         String
+  status      BookingStatus @default(PENDING)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Mobil {
+  id              String     @id @default(uuid())
+  name            String
+  slug            String     @unique
+  description     String
+  price           Int
+  showroom        String
+  jenis_mobil     JenisMobil  @default(SUV)
+  engine_type     EngineType  @default(Bensin)
+  year            Int         @default(2023)
+  engine_capacity Int?        
+  brand           String      @default("Unknown")
+  capacity        Int         @default(5)
+  sales           User        @relation(fields: [salesId], references: [id])
+  salesId         String
+  bookings        Booking[]
+  images          MobilImage[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model MobilImage {
+  id        String   @id @default(uuid())
+  url       String
+  type      String   @default("other") // 'main', 'exterior', 'interior', 'other'
+  mobil     Mobil    @relation(fields: [mobilId], references: [id])
+  mobilId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([mobilId])
+}
+
+enum JenisMobil {
+  SUV
+  MPV
+  Hatchback
+  Sedan
+  Coupe
+  Wagon
+}
+
+enum EngineType {
+  Bensin
+  Electric
+  Hybrid
+}
