@@ -41,7 +41,9 @@ interface MobilWithSales {
   id: string;
   name: string;
   slug: string;
+  // @ts-ignore
   image: string;
+  // @ts-ignore
   images?: string[]; // Array of image URLs
   description: string;
   price: number;
@@ -183,19 +185,29 @@ export const createMobil = async (req: Request, res: Response, next: NextFunctio
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
 
-    // Create mobil first to get the ID
+    // Create mobil with the first image as main image
     const mobil = await prisma.mobil.create({
       data: {
         name,
         slug: baseSlug, // Temporary slug without ID
-        image,
         description,
         price: Number(price),
         showroom,
         sales: {
           connect: { id: salesId },
         },
+        images: {
+          create: [
+            {
+              url: image,
+              type: 'main'
+            }
+          ]
+        }
       },
+      include: {
+        images: true
+      }
     });
 
     // Update the mobil with the new slug that includes the ID
