@@ -2,17 +2,18 @@
   "name": "testdrivein-backend",
   "version": "1.0.0",
   "description": "Backend for TestDriveIn - Car Test Drive Booking Platform",
-  "main": "dist/app.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/app.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "build": "tsc && cp -r prisma dist/",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:migrate": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "ts-node prisma/seed.ts",
-    "vercel-build": "npm install && npm run prisma:generate && npm run build"
+    "vercel-build": "npm install && npm run prisma:generate && npm run build",
+    "postinstall": "npm run prisma:generate && npm run build"
   },
   "keywords": [
     "test-drive",
