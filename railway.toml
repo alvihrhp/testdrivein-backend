@@ -5,6 +5,8 @@ builder = "nixpacks"
 NPM_CONFIG_PRODUCTION = "false"
 NODE_ENV = "production"
 NODE_VERSION = "18.x"
+DATABASE_URL = "postgresql://postgres.ypxdkavjmabktpewvdhp:Password123!@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres"
+JWT_SECRET = "hamburger"
 
 [build.commands]
 build = "npm install && npm run build"
