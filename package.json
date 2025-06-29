@@ -14,8 +14,7 @@
     "prisma:studio": "prisma studio",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "ts-node prisma/seed.ts",
-    "postinstall": "npm run prisma:generate",
-    "vercel-build": "npm install && npm run prisma:generate && npm run build"
+    "postinstall": "npm run prisma:generate"
   },
   "keywords": [
     "test-drive",
@@ -49,5 +48,8 @@
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
