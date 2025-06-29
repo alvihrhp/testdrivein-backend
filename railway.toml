@@ -1,0 +1,19 @@
+[build]
+builder = "nixpacks"
+
+[build.arguments]
+NODE_ENV = "production"
+NPM_CONFIG_PRODUCTION = "false"
+
+[build.commands]
+setup = "npm install -g pnpm@latest"
+install = "pnpm install --frozen-lockfile"
+build = "npm run build"
+start = "npm start"
+
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+restartPolicyType = "on-failure"
+restartPolicyMaxRetries = 5
