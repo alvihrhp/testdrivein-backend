@@ -6,4 +6,4 @@ NPM_CONFIG_PRODUCTION = "false"
 NODE_ENV = "production"
 
 [deploy]
-startCommand = "npm start"
+startCommand = "npm run build && npm start"
