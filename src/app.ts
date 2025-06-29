@@ -23,8 +23,6 @@ app.use(cors({
 // Parse JSON bodies
 app.use(express.json());
 
-
-
 // API Routes
 app.use('/api/mobil', mobilRoutes);
 app.use('/api/bookings', bookingRoutes);
@@ -35,7 +33,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Di app.ts, tambahkan sebelum 404 handler
+// Root endpoint
 app.get('/', (req, res) => {
   res.json({ 
     message: 'TestDriveIn API is running',
@@ -54,17 +52,19 @@ app.use((err: any, req: any, res: any, next: any) => {
   res.status(500).json({ error: 'Internal Server Error' });
 });
 
-// Start the server
-const server = app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
-});
-
-// Handle process termination
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received. Shutting down gracefully');
-  server.close(() => {
-    console.log('Process terminated');
+// Only start the server if this file is run directly
+if (require.main === module) {
+  const server = app.listen(PORT, () => {
+    console.log(`🚀 Server is running on http://localhost:${PORT}`);
   });
-});
+
+  // Handle process termination
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM received. Shutting down gracefully');
+    server.close(() => {
+      console.log('Process terminated');
+    });
+  });
+}
 
 export default app;

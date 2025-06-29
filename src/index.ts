@@ -1,19 +1,27 @@
 import app from './app';
 import { prisma } from './app';
 
-// Handle shutdown
-export const shutdown = async () => {
-  console.log('Shutting down...');
-  await prisma.$disconnect();
-  process.exit(0);
-};
-
-// Handle termination signals
-process.on('SIGTERM', shutdown);
-process.on('SIGINT', shutdown);
+const PORT = process.env.PORT || 5001;
 
 // Start the server
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`🚀 Server is running on http://localhost:${PORT}`);
+});
+
+// Handle process termination
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received. Shutting down gracefully');
+  server.close(async () => {
+    await prisma.$disconnect();
+    console.log('Process terminated');
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  server.close(async () => {
+    await prisma.$disconnect();
+    console.log('Process terminated by user');
+    process.exit(0);
+  });
 });
