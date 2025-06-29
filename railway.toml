@@ -8,7 +8,7 @@ NODE_VERSION = "18.x"
 
 [build.commands]
 build = "npm install && npm run build"
-start = "npm start"
+start = "cd dist && node index.js"
 
 [deploy]
-startCommand = "npm start"
+startCommand = "cd dist && node index.js"

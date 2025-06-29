@@ -52,5 +52,9 @@
   "engines": {
     "node": "18.x",
     "npm": ">=9.0.0"
-  }
+  },
+  "files": [
+    "dist",
+    "prisma"
+  ]
 }
