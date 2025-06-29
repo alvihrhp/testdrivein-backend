@@ -1,7 +1,5 @@
 [build]
 builder = "nixpacks"
-buildCommand = "rm -rf node_modules && rm -f package-lock.json && npm install"
-startCommand = "npm start"
 
 [build.environment]
 NPM_CONFIG_PRODUCTION = "false"

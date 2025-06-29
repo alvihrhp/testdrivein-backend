@@ -14,7 +14,8 @@
     "prisma:studio": "prisma studio",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "ts-node prisma/seed.ts",
-    "postinstall": "npm run prisma:generate"
+    "postinstall": "npm run prisma:generate",
+    "railway:deploy": "npm install && npm run build"
   },
   "keywords": [
     "test-drive",
@@ -50,6 +51,7 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
