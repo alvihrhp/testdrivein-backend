@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5001;
 
 // Basic CORS configuration
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
@@ -22,6 +22,8 @@ app.use(cors({
 
 // Parse JSON bodies
 app.use(express.json());
+
+
 
 // API Routes
 app.use('/api/mobil', mobilRoutes);
@@ -31,6 +33,14 @@ app.use('/api/auth', authRoutes);
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Di app.ts, tambahkan sebelum 404 handler
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'TestDriveIn API is running',
+    docs: 'https://github.com/alvihrhp/testdrivein-backend#readme'
+  });
 });
 
 // 404 handler
