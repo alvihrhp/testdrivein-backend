@@ -4,6 +4,11 @@ builder = "nixpacks"
 [build.environment]
 NPM_CONFIG_PRODUCTION = "false"
 NODE_ENV = "production"
+NODE_VERSION = "18.x"
+
+[build.commands]
+build = "npm install && npm run build"
+start = "npm start"
 
 [deploy]
-startCommand = "npm run build && npm start"
+startCommand = "npm start"
