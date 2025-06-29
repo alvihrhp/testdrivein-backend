@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../app';
+const bcrypt = require('bcryptjs')
 
 interface BookingData {
   name: string;
@@ -47,8 +48,8 @@ export const createBooking = async (req: Request, res: Response): Promise<void> 
     if (!user) {
       // Create a temporary password for new users
       const tempPassword = Math.random().toString(36).slice(-8);
-      const salt = await (await import('bcryptjs')).genSalt(10);
-      const hashedPassword = await (await import('bcryptjs')).hash(tempPassword, salt);
+      const salt = await (bcrypt).genSalt(10);
+      const hashedPassword = await (bcrypt).hash(tempPassword, salt);
       
       user = await prisma.user.create({
         data: {
